@@ -1,6 +1,11 @@
 <template>
   <div>Select an option below</div>
-  <v-btn v-for="option in options" :key="option" class="d-flex my-4 mx-auto" @click="selectOption(option)">
+  <v-btn
+    v-for="option in options"
+    :key="option"
+    class="d-flex my-4 mx-auto"
+    @click="selectOption(option)"
+  >
     {{ option }} Piece
   </v-btn>
   <div>{{ combo }}</div>
@@ -13,14 +18,7 @@ const selectedNum = ref(0);
 const combo = reactive([]);
 let longRange = {
   next: ["shortRange", "midRange", "longRange"],
-  strikes: [
-    "jab",
-    "jab",
-    "cross",
-    "cross",
-    "teep",
-    "kick",
-  ],
+  strikes: ["jab", "jab", "cross", "cross", "teep", "kick"],
   // strikes: [
   //   "jab",
   //   "cross",
@@ -33,11 +31,7 @@ let longRange = {
 
 let midRange = {
   next: ["shortRange", "midRange", "longRange"],
-  strikes: [
-    "hook",
-    "uppercut",
-    "step knee",
-  ],
+  strikes: ["hook", "uppercut", "step knee"],
   // strikes: [
   //   "left hook",
   //   "right hook",
@@ -62,7 +56,7 @@ function getNextStrike({ strikes, next }) {
   };
 }
 function selectOption(choice) {
-  this.combo.splice(0, this.combo.length);
+  if (this.combo?.length) this.combo?.splice(0, this.combo.length);
   this.selectedNum = choice;
   this.generateCombo();
 }
@@ -71,7 +65,7 @@ function generateCombo() {
     this.getRandomInt(3)
   ];
   for (let i = 0; i < this.selectedNum; i++) {
-    let {strike, next} = this.getNextStrike(nextUp)
+    let { strike, next } = this.getNextStrike(nextUp);
     this.combo.push(strike);
     nextUp = this[next];
   }
