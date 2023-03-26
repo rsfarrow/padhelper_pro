@@ -56,6 +56,7 @@ function getNextStrike({ strikes, next }) {
   };
 }
 function selectOption(choice) {
+  console.log('this.combo', this.combo);
   if (this.combo?.length) this.combo?.splice(0, this.combo.length);
   this.selectedNum = choice;
   this.generateCombo();
