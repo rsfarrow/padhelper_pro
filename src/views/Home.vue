@@ -14,9 +14,9 @@
 <script setup>
 import { ref, reactive } from "vue";
 const options = [3, 4, 5, 6, 8];
-const selectedNum = ref(0);
-const combo = reactive([]);
-let longRange = {
+let selectedNum = ref(0);
+let combo = reactive([]);
+const longRange = {
   next: ["shortRange", "midRange", "longRange"],
   strikes: ["jab", "jab", "cross", "cross", "teep", "kick"],
   // strikes: [
@@ -29,7 +29,7 @@ let longRange = {
   // ],
 };
 
-let midRange = {
+const midRange = {
   next: ["shortRange", "midRange", "longRange"],
   strikes: ["hook", "uppercut", "step knee"],
   // strikes: [
@@ -42,33 +42,34 @@ let midRange = {
   // ],
 };
 
-let shortRange = {
+const shortRange = {
   next: ["shortRange", "midRange"],
   strikes: ["elbow", "knee"],
   // strikes: ["left elbow", "right elbow", "left knee", "right knee"],
 };
+const rangeOptions = {shortRange, midRange, longRange};
 function getNextStrike({ strikes, next }) {
   const strikesLength = strikes.length;
   const rangeLength = next.length;
   return {
-    strike: strikes[this.getRandomInt(strikesLength)],
-    next: next[this.getRandomInt(rangeLength)],
+    strike: strikes[getRandomInt(strikesLength)],
+    next: next[getRandomInt(rangeLength)],
   };
 }
 function selectOption(choice) {
-  console.log('this.combo', this.combo);
-  if (this.combo?.length) this.combo?.splice(0, this.combo.length);
-  this.selectedNum = choice;
-  this.generateCombo();
+  console.log('combo', combo);
+  if (combo?.length) combo?.splice(0, combo.length);
+  selectedNum = choice;
+  generateCombo();
 }
 function generateCombo() {
-  let nextUp = [this.longRange, this.midRange, this.shortRange][
-    this.getRandomInt(3)
+  let nextUp = [longRange, midRange, shortRange][
+    getRandomInt(3)
   ];
-  for (let i = 0; i < this.selectedNum; i++) {
-    let { strike, next } = this.getNextStrike(nextUp);
-    this.combo.push(strike);
-    nextUp = this[next];
+  for (let i = 0; i < selectedNum; i++) {
+    let { strike, next } = getNextStrike(nextUp);
+    combo.push(strike);
+    nextUp = rangeOptions[next];
   }
 }
 function getRandomInt(max) {
